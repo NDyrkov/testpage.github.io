@@ -306,6 +306,37 @@ window.testUnits = [
       });
     },
     style: dialogStyle,
+    script: function () = async () => {
+    try {
+        const video = document.createElement("video");
+
+        // Проверяем поддержку Encrypted Media Extensions (EME)
+        if (!video.mediaKeys) {
+            console.error("Encrypted Media Extensions (EME) не поддерживаются в этом браузере.");
+            return;
+        }
+
+        // Создаём MediaKeys объект для работы с DRM
+        const mediaKeySystemAccess = await navigator.requestMediaKeySystemAccess("com.widevine.alpha", [
+            {
+                initDataTypes: ["cenc"],
+                audioCapabilities: [
+                    { contentType: "audio/mp4; codecs=\"mp4a.40.2\"" }
+                ],
+                videoCapabilities: [
+                    { contentType: "video/mp4; codecs=\"avc1.42E01E\"" }
+                ]
+            }
+        ]);
+
+        // Создаём MediaKeys и привязываем их к видео
+        const mediaKeys = await mediaKeySystemAccess.createMediaKeys();
+        await video.setMediaKeys(mediaKeys);
+
+        console.log("Доступ предоставлен, видео готово к воспроизведению защищённого контента.");
+    } catch (err) {
+        console.error("Ошибка запроса доступа к DRM: ", err);
+    }
     content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
 }
 ];
