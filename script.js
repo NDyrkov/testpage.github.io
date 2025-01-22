@@ -296,31 +296,26 @@ window.testUnits = [
       
     },
     style: dialogStyle,
-    script: async function () {
-      try {
-          const video = document.createElement("video");
-          if (!video.mediaKeys) {
-              console.error("Encrypted Media Extensions (EME) не поддерживаются в этом браузере.");
-              return;
-          }
-          const mediaKeySystemAccess = await navigator.requestMediaKeySystemAccess("com.widevine.alpha", [
-              {
-                  initDataTypes: ["cenc"],
-                  audioCapabilities: [
-                      { contentType: "audio/mp4; codecs=\"mp4a.40.2\"" }
-                  ],
-                  videoCapabilities: [
-                      { contentType: "video/mp4; codecs=\"avc1.42E01E\"" }
-                  ]
-              }
-          ]);
-          const mediaKeys = await mediaKeySystemAccess.createMediaKeys();
-          await video.setMediaKeys(mediaKeys);
-          console.log("Доступ предоставлен, видео готово к воспроизведению защищённого контента.");
-      } catch (err) {
-          console.error("Ошибка запроса доступа к DRM: ", err);
-      }
-      content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
+    script: function () {
+      const clearKeyOptions = [
+        {
+          initDataTypes: ["keyids", "webm"],
+          audioCapabilities: [
+            { contentType: 'audio/webm; codecs="opus"' },
+            { contentType: 'audio/webm; codecs="vorbis"' },
+          ],
+          videoCapabilities: [
+            { contentType: 'video/webm; codecs="vp9"' },
+            { contentType: 'video/webm; codecs="vp8"' },
+          ],
+        },
+      ];
+      
+      navigator
+        .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
+        .then((keySystemAccess) => {
+          console.log("Have keys");
+        });
     },
     content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
 };
