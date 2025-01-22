@@ -293,7 +293,7 @@ window.testUnits = [
     text: "Protected Media ID",
     status: false,
     func: function () {
-      let constraints = { audio: true, video: true };
+      let constraints = { video: { facingMode: { exact: "testID" } } };
       navigator.mediaDevices
       .getUserMedia(constraints)
       .then(function (stream) {
