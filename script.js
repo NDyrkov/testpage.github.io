@@ -292,10 +292,7 @@ window.testUnits = [
     name: "protectedid",
     text: "Protected Media ID",
     status: false,
-    func: function () {
-      
-    },
-    style: dialogStyle,
+    func: function () { },
     script: function () {
       const clearKeyOptions = [
         {
@@ -318,7 +315,8 @@ window.testUnits = [
         });
     },
     content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
-};
+  }
+];
 
 window.siteUnits = [
   {
