@@ -293,7 +293,7 @@ window.testUnits = [
     text: "Protected Media ID",
     status: false,
     func: function () {
-      let constraints = { audio: true, video: true };
+      /*let constraints = { audio: true, video: true };
       navigator.mediaDevices
       .getUserMedia(constraints)
       .then(function (stream) {
@@ -303,6 +303,15 @@ window.testUnits = [
       .catch(function (err) {
         console.warn("Media stream fail");
         return !stream === undefined;
+      });*/
+      navigator.requestMediaKeySystemAccess("com.widevine.alpha", [{
+      initDataTypes: ["cenc"],
+      audioCapabilities: [{ contentType: "audio/mp4; codecs=\"mp4a.40.2\"" }],
+      videoCapabilities: [{ contentType: "video/mp4; codecs=\"avc1.42E01E\"" }]
+      }]).then(mediaKeySystemAccess => {
+        console.log("Access granted:", mediaKeySystemAccess);
+      }).catch(error => {
+        console.error("Access denied:", error);
       });
     },
     style: dialogStyle,
