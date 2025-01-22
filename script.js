@@ -292,10 +292,12 @@ window.testUnits = [
     name: "protectedid",
     text: "Protected Media ID",
     status: false,
-    func: function () { localStorage.getItem("protectedid") == "true" },
+    func: function() {
+        return localStorage.getItem("protectedid") == "true";
+    },
+    style: dialogStyle,
     script: function () {
-      const clearKeyOptions = [
-        {
+      const clearKeyOptions = [{
           initDataTypes: ["keyids", "webm"],
           audioCapabilities: [
             { contentType: 'audio/webm; codecs="opus"' },
@@ -305,15 +307,17 @@ window.testUnits = [
             { contentType: 'video/webm; codecs="vp9"' },
             { contentType: 'video/webm; codecs="vp8"' },
           ],
-        },
-      ];
-      
+        }];
+    
       navigator
         .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
         .then((keySystemAccess) => {
-          localStorage.setItem("protectedid", "true");
+          window.localStorage.setItem("protectedid", "true");
+        })
+        .catch((err) => {
+          window.localStorage.setItem("protectedid", "false");
         });
-    },
+    }, 
     content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
   }
 ];
