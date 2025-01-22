@@ -292,7 +292,7 @@ window.testUnits = [
     name: "protectedid",
     text: "Protected Media ID",
     status: false,
-    func: function () { },
+    func: function () { localStorage.getItem("protectedid") == "true" },
     script: function () {
       const clearKeyOptions = [
         {
@@ -311,7 +311,7 @@ window.testUnits = [
       navigator
         .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
         .then((keySystemAccess) => {
-          console.log("Have keys");
+          localStorage.setItem("protectedid", "true");
         });
     },
     content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
