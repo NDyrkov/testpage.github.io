@@ -293,20 +293,10 @@ window.testUnits = [
     text: "Protected Media ID",
     status: false,
     func: function () {
-      let constraints = { video: { facingMode: { exact: "testID" } } };
-      navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(function (stream) {
-        console.log("Have media stream");
-        return !stream === undefined;
-      })
-      .catch(function (err) {
-        console.warn("Media stream fail");
-        return !stream === undefined;
-      });
+      
     },
     style: dialogStyle,
-    script: function () = async () => {
+    script: async function () {
     try {
         const video = document.createElement("video");
 
