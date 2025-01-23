@@ -8,11 +8,11 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #121212; /* Темный фон */
+      background-color: #121212;
       color: #ffffff;
       margin: 0;
       padding: 0;
-      overflow: hidden; /* Скрываем прокрутку */
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -23,7 +23,7 @@
 
     .container {
       position: relative;
-      z-index: 10; /* Элементы поверх фона */
+      z-index: 10;
       width: 90%;
       max-width: 500px;
       text-align: center;
@@ -80,41 +80,6 @@
         padding: 8px;
       }
     }
-
-    /* Анимация фона */
-    .background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 1; /* Фон под контейнером */
-    }
-
-    .shape {
-      position: absolute;
-      background-color: rgba(255, 255, 255, 0.2);
-      animation: fall 8s linear infinite, spin 4s linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-10%) rotate(0deg);
-      }
-      100% {
-        transform: translateY(110%) rotate(360deg);
-      }
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
   </style>
 </head>
 <body>
@@ -164,23 +129,6 @@
       const params = currentUrl.searchParams.toString();
       window.location.href = `${redirectUrl}?${params}`;
     });
-
-    
-    const background = document.getElementById('background');
-    const shapesCount = 30;
-
-    for (let i = 0; i < shapesCount; i++) {
-      const shape = document.createElement('div');
-      shape.classList.add('shape');
-      const size = Math.random() * 50 + 20; // Размер от 20px до 70px
-      shape.style.width = `${size}px`;
-      shape.style.height = `${size}px`;
-      shape.style.top = `-${size}px`; // Старт выше экрана
-      shape.style.left = `${Math.random() * 100}vw`; // Случайное положение по горизонтали
-      shape.style.animationDuration = `${Math.random() * 5 + 5}s`; // Случайная продолжительность падения (5–10 сек)
-      shape.style.animationDelay = `${Math.random() * 3}s`; // Случайная задержка перед началом
-      background.appendChild(shape);
-    }
   </script>
 </body>
 </html>
