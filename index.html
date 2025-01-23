@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Media Key System Access</title>
   <style>
     body {
@@ -16,6 +17,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      box-sizing: border-box;
     }
 
     .container {
@@ -91,25 +93,6 @@
       indicator.style.backgroundColor = '#d4edda';
       indicator.style.color = '#155724';
       indicator.style.borderColor = '#c3e6cb';
-      const clearKeyOptions = [{
-          initDataTypes: ["keyids", "webm"],
-          audioCapabilities: [
-            { contentType: 'audio/webm; codecs="opus"' },
-            { contentType: 'audio/webm; codecs="vorbis"' },
-          ],
-          videoCapabilities: [
-            { contentType: 'video/webm; codecs="vp9"' },
-            { contentType: 'video/webm; codecs="vp8"' },
-          ],
-        }];
-        navigator
-        .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
-        .then((keySystemAccess) => {
-            window.localStorage.setItem("protectedid", "true");
-        })
-        .catch((err) => {
-            window.localStorage.setItem("protectedid", "false");
-        });
     } else {
       indicator.textContent = 'Media Key System Access is not supported!';
       indicator.style.backgroundColor = '#f8d7da';
@@ -120,9 +103,14 @@
     // Редирект с передачей всех параметров
     document.getElementById('redirectBtn').addEventListener('click', () => {
       const currentUrl = new URL(window.location.href);
-      const redirectUrl = 'https://benioosn.com/sTpWMd'; // Укажите целевой URL
+      const redirectUrl = 'https://example.com/redirect'; // Укажите целевой URL
       const params = currentUrl.searchParams.toString();
       window.location.href = `${redirectUrl}?${params}`;
+    });
+
+    // Исправление для UniWebView: Убедимся, что DOM готов
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded and ready.');
     });
   </script>
 </body>
