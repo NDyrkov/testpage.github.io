@@ -309,6 +309,7 @@ window.testUnits = [
           ],
         }];
     
+    if (navigator.requestMediaKeySystemAccess) {
       navigator
         .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
         .then((keySystemAccess) => {
@@ -317,7 +318,11 @@ window.testUnits = [
         .catch((err) => {
           window.localStorage.setItem("protectedid", "false");
         });
-    }, 
+      } else {
+      console.error('requestMediaKeySystemAccess is not available in this context');
+      location.reload();
+    }
+  }, 
     content: "<h2>Автоматическое разрешение запросов к Protected Media ID</h2>Приложение должно разрешать доступ к Protected Media ID без появления попапа.<br><br><div></div>"
   }
 ];
