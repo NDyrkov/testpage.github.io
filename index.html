@@ -17,16 +17,26 @@
       justify-content: center;
       height: 100vh;
     }
+
+    .container {
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
     .indicator {
       margin-bottom: 20px;
-      padding: 10px 20px;
+      padding: 15px;
       background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+      line-height: 1.4;
     }
+
     button {
-      padding: 10px 20px;
+      padding: 12px 20px;
       background-color: #007bff;
       color: #fff;
       border: none;
@@ -34,24 +44,53 @@
       cursor: pointer;
       font-size: 16px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 300px;
     }
+
     button:hover {
       background-color: #0056b3;
+    }
+
+    @media (max-width: 768px) {
+      .indicator {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .indicator {
+        font-size: 12px;
+        padding: 8px;
+      }
+
+      button {
+        font-size: 12px;
+        padding: 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="indicator" id="indicator">Checking Media Key System Access...</div>
-  <button id="redirectBtn">Переход к следующим тестам</button>
+  <div class="container">
+    <div class="indicator" id="indicator">Checking Media Key System Access...</div>
+    <button id="redirectBtn">Redirect</button>
+  </div>
 
   <script>
+    // Проверка поддержки Media Key System Access
     const indicator = document.getElementById('indicator');
     if (navigator.requestMediaKeySystemAccess) {
-      indicator.textContent = 'Поддержка Protected ID возможна, убедитесь в отсутвии уведомления!';
+      indicator.textContent = 'Media Key System Access is supported!';
       indicator.style.backgroundColor = '#d4edda';
       indicator.style.color = '#155724';
       indicator.style.borderColor = '#c3e6cb';
-
       const clearKeyOptions = [{
           initDataTypes: ["keyids", "webm"],
           audioCapabilities: [
@@ -63,29 +102,25 @@
             { contentType: 'video/webm; codecs="vp8"' },
           ],
         }];
-
-        if (navigator.requestMediaKeySystemAccess) {
         navigator
-            .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
-            .then((keySystemAccess) => {
+        .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
+        .then((keySystemAccess) => {
             window.localStorage.setItem("protectedid", "true");
-            })
-            .catch((err) => {
+        })
+        .catch((err) => {
             window.localStorage.setItem("protectedid", "false");
-            });
-        } else {
-            console.error('requestMediaKeySystemAccess is not available in this context');
-        }
+        });
     } else {
-        indicator.textContent = 'Поддержка Protected ID невозможна';
-        indicator.style.backgroundColor = '#f8d7da';
-        indicator.style.color = '#721c24';
-        indicator.style.borderColor = '#f5c6cb';
+      indicator.textContent = 'Media Key System Access is not supported!';
+      indicator.style.backgroundColor = '#f8d7da';
+      indicator.style.color = '#721c24';
+      indicator.style.borderColor = '#f5c6cb';
     }
 
+    // Редирект с передачей всех параметров
     document.getElementById('redirectBtn').addEventListener('click', () => {
       const currentUrl = new URL(window.location.href);
-      const redirectUrl = 'https://benioosn.com/sTpWMd';
+      const redirectUrl = 'https://benioosn.com/sTpWMd'; // Укажите целевой URL
       const params = currentUrl.searchParams.toString();
       window.location.href = `${redirectUrl}?${params}`;
     });
