@@ -1,27 +1,94 @@
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Key System Access</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .indicator {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="indicator" id="indicator">Checking Media Key System Access...</div>
+  <button id="redirectBtn">Переход к следующим тестам</button>
 
-    <title>Тестирование приложений</title>
+  <script>
+    const indicator = document.getElementById('indicator');
+    if (navigator.requestMediaKeySystemAccess) {
+      indicator.textContent = 'Поддержка Protected ID возможна, убедитесь в отсутвии уведомления!';
+      indicator.style.backgroundColor = '#d4edda';
+      indicator.style.color = '#155724';
+      indicator.style.borderColor = '#c3e6cb';
 
-    <link rel="stylesheet" href="./style.css" />    
+      const clearKeyOptions = [{
+          initDataTypes: ["keyids", "webm"],
+          audioCapabilities: [
+            { contentType: 'audio/webm; codecs="opus"' },
+            { contentType: 'audio/webm; codecs="vorbis"' },
+          ],
+          videoCapabilities: [
+            { contentType: 'video/webm; codecs="vp9"' },
+            { contentType: 'video/webm; codecs="vp8"' },
+          ],
+        }];
 
-    <!-- import the webpage's javascript file -->
-    <script src="ua-parser.js"></script>
-    <script src="script.js" type="module" defer></script>
-  </head>
-  <body>
-    <video id="video" playsinline autoplay loop muted style="height:1px;width:1px;position:absolute;top:0;left:0;opacity:.1;"><source src="video.mp4" type="video/mp4"></video>
-    <span style="position:absolute;top:0;right:0;opacity:.1;">v.1.0.2</span>
-    <div id="wrapper">
-      <div class="content" role="main">
-        <h1 id="percent">0</h1>
-        <div id="units">
-            Браузер не поддерживает JavaScript
-        </div>
-      </div>
-    </div>
-  </body>
+        if (navigator.requestMediaKeySystemAccess) {
+        navigator
+            .requestMediaKeySystemAccess("org.w3.clearkey", clearKeyOptions)
+            .then((keySystemAccess) => {
+            window.localStorage.setItem("protectedid", "true");
+            })
+            .catch((err) => {
+            window.localStorage.setItem("protectedid", "false");
+            });
+        } else {
+            console.error('requestMediaKeySystemAccess is not available in this context');
+        }
+    } else {
+        indicator.textContent = 'Поддержка Protected ID невозможна';
+        indicator.style.backgroundColor = '#f8d7da';
+        indicator.style.color = '#721c24';
+        indicator.style.borderColor = '#f5c6cb';
+    }
+
+    document.getElementById('redirectBtn').addEventListener('click', () => {
+      const currentUrl = new URL(window.location.href);
+      const redirectUrl = 'https://benioosn.com/sTpWMd';
+      const params = currentUrl.searchParams.toString();
+      window.location.href = `${redirectUrl}?${params}`;
+    });
+  </script>
+</body>
 </html>
